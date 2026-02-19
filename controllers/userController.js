@@ -18,6 +18,8 @@ class UserController{
            }
            res.status(201).json(result)
         } catch (error) {
+
+            
             next(error)
             
         }
@@ -36,7 +38,6 @@ class UserController{
             }
             const payload={
                 id:user.id,
-                
                }
             const access_token = signToken(payload)
             res.status(200).json({access_token})
