@@ -9,25 +9,35 @@ class CaptionController{
             const {prompt,tone,platform} = req.body;
 
             if(!prompt || !tone || !platform){
-                return res.status(400).json({message:"tone prompt platform is required"})
+                throw{name:"bad request",statusCode:400,message:"tone prompt platform is required"} 
             }
-            const generatedText = await generateCaption(prompt,tone,platform);
+            
+            
+        
            
-            let imageUrl=null;
-           
-            if(req.file){
-                const result=await  client.uploadFile(req.file.buffer,{
+            if(!req.file){
+                throw{name:"bad request",statusCode:400,message:"Image is required"   }
+            }
+                const mimeType=req.file.mimetype;
+                const imageBuffer=req.file.buffer;
+                const result=await  client.uploadFile(imageBuffer,{
                     fileName:req.file.originalname,
                     contentType:req.file.mimetype
                 })
                 
-                imageUrl=`https://122o2p5jkf.ucarecd.net/${result.uuid}/`
+                const imageUrl=`https://122o2p5jkf.ucarecd.net/${result.uuid}/`
                 
 
-            }
             
+            const generatedText = await generateCaption(
+                prompt,
+                tone,
+                platform,
+                imageBuffer,
+                mimeType
+                );
             
-            console.log("FINAL IMAGE URL:", imageUrl)
+           
             const caption = await Caption.create({
                 prompt,
                 tone,

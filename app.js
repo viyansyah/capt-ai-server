@@ -5,7 +5,7 @@ const CaptionController = require('./controllers/captionController')
 const authentication = require('./middlewares/auth')
 const upload = require('./middlewares/multer')
 const app = express()
-const port = 3004
+const port = 3007
 
 
 app.use(express.json())
