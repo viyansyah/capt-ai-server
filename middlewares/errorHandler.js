@@ -8,6 +8,9 @@ const errorHandler = (err,req,res,next)=>{
     if(err.name === "Bad Request"){
         return res.status(400).json({message:err.message})
     }
+    if(err.name === "SequelizeValidationError"){
+        return res.status(400).json({message:err.message})
+    }
     return res.status(500).json({message:"Internal Server Error"})
 }
 
