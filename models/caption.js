@@ -65,7 +65,11 @@ module.exports = (sequelize, DataTypes) => {
           msg: "Generated Text is required"
         }
       }
-    }
+    },
+    imageUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    } 
   }, {
     sequelize,
     modelName: 'Caption',

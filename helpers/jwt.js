@@ -6,11 +6,11 @@ const signToken=(payload)=>{
 }
 
 
-const verifyIdToken=(token)=>{
+const verifyToken=(token)=>{
     return jwt.verify(token,secret_key)
 }
 
 module.exports={
     signToken,
-    verifyIdToken
+    verifyToken
 }

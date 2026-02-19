@@ -1,5 +1,9 @@
+const client = require('../helpers/uploadCare');
 const {Caption} = require('../models');
+const generateCaption = require('../services/gemini');
+
 class CaptionController{
+
     static async addCaption(req,res,next){
         try {
             const {prompt,tone,platform} = req.body;
@@ -7,24 +11,35 @@ class CaptionController{
             if(!prompt || !tone || !platform){
                 return res.status(400).json({message:"tone prompt platform is required"})
             }
+            const generatedText = await generateCaption(prompt,tone,platform);
            
-            let imageUrl=""
+            let imageUrl=null;
+           
             if(req.file){
                 const result=await  client.uploadFile(req.file.buffer,{
                     fileName:req.file.originalname,
                     contentType:req.file.mimetype
                 })
+                
                 imageUrl=`https://122o2p5jkf.ucarecd.net/${result.uuid}/`
-
+                
 
             }
+            
+            
+            console.log("FINAL IMAGE URL:", imageUrl)
             const caption = await Caption.create({
                 prompt,
                 tone,
                 platform,
-                userId:req.user,
-                imageUrl:imageUrl
+                generatedText,
+                imageUrl:imageUrl,
+                userId:req.user.id
+                
             });
+            
+            console.log(caption);
+            
             res.status(201).json(caption);
             
         } catch (error) {
@@ -33,9 +48,9 @@ class CaptionController{
     }
     static async readCaption(req,res,next){
         try {
-            const userId = req.user;
+            
             const caption = await Caption.findAll({
-                where:{userId}
+                where:{userId:req.user.id}
             });
             res.status(200).json(caption);
             
@@ -49,14 +64,13 @@ class CaptionController{
     static async deleteCaption(req,res,next){
         try {
             const {id} = req.params;
-            const userId = req.user;
             const caption = await Caption.destroy({
-                where:{id,userId}
+                where:{id,userId:req.user.id}
             });
             if(!caption){
-               throw{name:"Unauthorized",statusCode:404,message:"Caption not found"}    
+               throw{name:"not found",statusCode:404,message:"Caption not found"}    
             }
-            res.status(200).json(caption);
+            res.status(200).json({ message: "Caption-AI deleted successfully" });
             
         } catch (error) {
             next(error)
@@ -66,11 +80,11 @@ class CaptionController{
     static async updateCaption(req,res,next){
         try {
             const {id} = req.params;
-            const userId = req.user;
             const {prompt,tone,platform} = req.body;
             const caption = await Caption.update({prompt,tone,platform},{
-                where:{id,userId}
+                where:{id,userId:req.user.id}
             });
+            
             res.status(200).json(caption);
             
         } catch (error) {
@@ -81,7 +95,7 @@ class CaptionController{
     
 
 
-
 }
+module.exports = CaptionController;
 
 
