@@ -12,13 +12,10 @@ class CaptionController{
                 throw{name:"bad request",statusCode:400,message:"tone prompt platform is required"} 
             }
             
-            
-        
            
             if(!req.file){
                 throw{name:"bad request",statusCode:400,message:"Image is required"   }
             }
-                const mimeType=req.file.mimetype;
                 const imageBuffer=req.file.buffer;
                 const result=await  client.uploadFile(imageBuffer,{
                     fileName:req.file.originalname,
@@ -33,8 +30,6 @@ class CaptionController{
                 prompt,
                 tone,
                 platform,
-                imageBuffer,
-                mimeType
                 );
             
            
@@ -90,10 +85,26 @@ class CaptionController{
     static async updateCaption(req,res,next){
         try {
             const {id} = req.params;
-            const {prompt,tone,platform} = req.body;
-            const caption = await Caption.update({prompt,tone,platform},{
+           
+            const caption = await Caption.findOne({
                 where:{id,userId:req.user.id}
             });
+            if(!caption){
+               throw{name:"not found",statusCode:404,message:"Caption not found"}    
+            }
+            
+            
+            const result=await generateCaption(
+                caption.prompt,
+                caption.tone,
+                caption.platform,
+            )
+           
+            
+            
+            caption.generatedText=result;
+            await caption.save();
+           
             
             res.status(200).json(caption);
             

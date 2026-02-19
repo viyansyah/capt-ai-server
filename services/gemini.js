@@ -1,28 +1,22 @@
 require('dotenv').config()
 const { GoogleGenAI } = require("@google/genai");
-
 const ai = new GoogleGenAI({apiKey:process.env.GEMINI_API_KEY});
 
-async function generateCaption(prompt,tone,platform,imageBuffer,mimeType) {
+async function generateCaption(prompt,tone,platform) {
     try {
-        const base64Image = imageBuffer.toString("base64");
+        
         const response = await ai.models.generateContent({
           model: "gemini-2.5-flash",
-          contents: [
-            {
-                parts:[
-                    {
-                        text:`kamu adalah profesional caption writer, berikan 1 caption terbaik  maksimal 120 karakter untuk post ini : ${prompt} dengan tone ${tone} untuk platform ${platform} hasilnya caption langsung tidak ada tambahan apa apa`
-                    },
-                    {
-                        inlineData:{
-                            mimeType:mimeType,
-                            data:base64Image
-                        }
-                    }
-                ]
-            }
-        ]
+          contents:`kamu adalah profesional caption writer.
+          Tugas:
+           buatkan 1 caption terbaik  maksimal 120 karakter.
+           Detail :
+           topik: ${prompt}
+           tone : ${tone} 
+           platform: ${platform}
+
+           output
+           Hanya caption tanpa tambahan apapun.`
         });
     
         const text = response.candidates[0].content.parts[0].text;
