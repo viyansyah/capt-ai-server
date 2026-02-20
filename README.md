@@ -9,11 +9,11 @@ berdasarkan gambar, tone, dan platform.
 
 ### Local
 
-http://localhost:3000
+http://localhost:3400
 
 ### Production
 
-https://your-domain.com
+https://server.viyansyah.my.id
 
 ------------------------------------------------------------------------
 
