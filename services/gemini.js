@@ -22,7 +22,7 @@ async function generateCaption(prompt,tone,platform) {
         const text = response.candidates[0].content.parts[0].text;
         return text;
     } catch (error) {
-        console.log(error);
+        throw{name:"Bad Request",statusCode:400,message:"Gemini failed to generate caption"}
       
         
     }

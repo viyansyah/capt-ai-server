@@ -9,12 +9,12 @@ class CaptionController{
             const {prompt,tone,platform} = req.body;
 
             if(!prompt || !tone || !platform){
-                throw{name:"bad request",statusCode:400,message:"tone prompt platform is required"} 
+                throw{name:"Bad Request",statusCode:400,message:"tone prompt platform is required"} 
             }
             
            
             if(!req.file){
-                throw{name:"bad request",statusCode:400,message:"Image is required"   }
+                throw{name:"Bad Request",statusCode:400,message:"Image is required"   }
             }
                 const imageBuffer=req.file.buffer;
                 const result=await  client.uploadFile(imageBuffer,{
