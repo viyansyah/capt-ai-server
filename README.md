@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🚀 Capt AI -- API Documentation
 
 AI-powered caption generator untuk membuat caption media sosial
@@ -189,3 +190,4 @@ Content-Type: multipart/form-data
 -   JWT Authentication\
 -   Uploadcare\
 -   Google Gemini API
+
