@@ -28,6 +28,9 @@ class UserController{
     static async login(req,res,next){
         try {
             const {email,password}=req.body
+            if(!email || !password){
+                throw{name:"Bad Request",statusCode:400,message:"Email and password are required"}
+            }
             const user = await User.findOne({where:{email}})
             if(!user){
                 return res.status(404).json({message:"Invalid password or email"})
@@ -40,6 +43,9 @@ class UserController{
                 id:user.id,
                }
             const access_token = signToken(payload)
+            if(!access_token){
+                throw{name:"Bad Request",statusCode:400,message:"Token is required"}
+            }
             res.status(200).json({access_token})
         } catch (error) {
             next(error)
