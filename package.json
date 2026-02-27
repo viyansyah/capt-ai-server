@@ -2,9 +2,9 @@
   "name": "project",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js.js",
+  "main": "app.js",
   "scripts": {
-    "start": "sequelize db:migrate && node server.js",
+    "start": "sequelize db:migrate && node app.js",
     "test": "jest --runInBand --detectOpenHandles"
   },
   "jest": {
