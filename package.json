@@ -26,12 +26,13 @@
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.0.2",
     "pg": "^8.18.0",
+    "sequelize-cli": "^6.6.5",
     "sequelize": "^6.37.7",
     "uploadcare": "^0.4.8"
   },
   "devDependencies": {
     "jest": "^29.7.0",
-    "sequelize-cli": "^6.6.5",
+    
     "supertest": "^7.2.2"
   }
 }
