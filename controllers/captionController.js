@@ -22,7 +22,7 @@ class CaptionController{
                     contentType:req.file.mimetype
                 })
                 
-                const imageUrl=`https://122o2p5jkf.ucarecd.net/${result.uuid}/`
+                const imageUrl=`https://383xd3ly0h.ucarecd.net/${result.uuid}/-/preview/600x400/`
                 
 
             
